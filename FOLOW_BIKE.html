@@ -1,0 +1,103 @@
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Seguir Caminho no Google Maps</title>   
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> 
+
+        <style>
+            /* Estilização para o mapa ocupar toda a altura da tela */
+            *{
+                font-family: 'Fira Sans', sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            html, body {
+                height: 85vh
+            }
+            body{
+                background-image: radial-gradient(circle at 240% 0%, #9182ff 0, #505bcc 50%, #05368b 100%);
+            }
+            #map {
+                height: 60%;
+                width: 50%;
+                border-radius: 3px;
+            }
+            #container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 99%;
+            }
+            #header {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100px;
+                background-color: #333;
+            }
+            h1{
+                color: #fff;
+            }
+            img{
+                width: 41%;
+                margin-right: 10px;
+                border-radius: 3px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <!-- Div para exibir o mapa -->
+        <div id="header">
+            <h1>Localização da E-bike:</h1>
+            <div id="barra"></div>
+        </div>
+        <div id="container">
+            <img src="./bike.png" alt="">
+            <div id="map"></div>
+        </div>
+
+
+        <!-- Script para carregar a API do Google Maps -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkDMpDwVfsgyllVIYL_blYA6B-b90EYeA&callback=initMap" async defer></script>
+        
+        <script>
+            var map;
+            var marker;
+            var pathCoordinates = [
+                {lat: -23.5505, lng: -46.6333}, // São Paulo, Brasil
+            ];
+            var currentIndex = 0;
+
+            // Função para inicializar o mapa
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: pathCoordinates[0]
+                });
+                marker = new google.maps.Marker({
+                    position: pathCoordinates[0],
+                    map: map,
+                    title: 'Posição Atual'
+                });
+
+                // Função para atualizar a posição do marcador
+                setInterval(updateMarkerPosition, 200); // Atualiza a cada 2 segundos
+            }
+
+            function updateMarkerPosition() {
+                if (currentIndex < pathCoordinates.length) {
+                    marker.setPosition(pathCoordinates[currentIndex]);
+                    map.panTo(pathCoordinates[currentIndex]);
+                    currentIndex++;
+                }
+            }
+        </script>
+            
+    </body>
+    </html>
